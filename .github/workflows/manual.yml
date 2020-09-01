@@ -15,7 +15,7 @@ on:
         required: true
 
 jobs:
-  build image:
+  build_image:
     runs-on: ubuntu-latest
 
     steps:
