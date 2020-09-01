@@ -1,0 +1,13 @@
+[Unit]
+Description=Automatic single shot sink configurator
+Requires=wirepasSink1.service
+
+[Service]
+Type=oneshot
+User=pi
+EnvironmentFile=/boot/wirepas/sink.env
+ExecStart=/home/pi/wirepas/configure_node.py set -s sink1 -S=yes
+ExecStartPost=sudo mv boot/wirepas/sink.env boot/wirepas/sink.success
+
+[Install]
+WantedBy=multi-user.target

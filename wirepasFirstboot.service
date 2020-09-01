@@ -1,0 +1,15 @@
+[Unit]
+Description=Script to execute at first boot only
+Requires=network-online.target
+ConditionFileNotEmpty=/home/pi/wirepas/firstboot.sh
+
+[Service]
+ExecStart=/home/pi/wirepas/firstboot.sh
+ExecStartPost=/bin/mv /home/pi/wirepas/firstboot.sh /home/pi/wirepas/firstboot.sh.done
+# Enable/Start other services
+ExecStartPost=reboot
+Type=oneshot
+RemainAfterExit=no
+
+[Install]
+WantedBy=multi-user.target
