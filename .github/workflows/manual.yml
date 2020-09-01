@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Call the script
-        run: ./create_image.sh
+        run: sudo ./create_image.sh
       - name: Store artifacts
         uses: actions/upload-artifact@v2
         with:
