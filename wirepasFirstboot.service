@@ -10,6 +10,9 @@ ExecStartPost=/bin/mv /home/pi/wirepas/firstboot.sh /home/pi/wirepas/firstboot.s
 ExecStartPost=reboot
 Type=oneshot
 RemainAfterExit=no
+# Restart until first working execution
+Restart=on-failure
+Restartsec=10
 
 [Install]
 WantedBy=multi-user.target
