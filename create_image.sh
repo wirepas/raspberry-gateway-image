@@ -11,8 +11,6 @@ unzip ${REF_IMAGE_NAME}
 # Get image file name
 IMAGE_FILE=$(ls *.img)
 
-ls -l ${IMAGE_FILE}
-
 # Mount the image to update it
 TMP=$(mktemp -d)
 LOOP=$(losetup --show -fP "${IMAGE_FILE}")
@@ -23,13 +21,7 @@ mount ${LOOP}p1 $TMP/boot/
 # Create wirepas folder to test
 mkdir $TMP/home/pi/wirepas
 
-echo "File before copy"
-ls -l wirepasSink1.service
-cat wirepasSink1.service
 cp wirepasSink1.service $TMP/etc/systemd/system/wirepasSink1.service
-echo "File once copied"
-ls -l $TMP/etc/systemd/system/wirepasSink1.service
-cat $TMP/etc/systemd/system/wirepasSink1.service
 cp wirepasTransport.service $TMP/etc/systemd/system/wirepasTransport.service
 cp wirepasConfigurator.service $TMP/etc/systemd/system/wirepasConfigurator.service
 
@@ -49,8 +41,6 @@ mkdir $TMP/boot/wirepas
 touch $TMP/boot/ssh
 
 echo "Files copied, unmounting image"
-# Check file content:
-cat 
 
 # Umount partitions
 umount $TMP/boot/
