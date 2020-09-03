@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Exit on any error. It will be the case if there is no network connection
+set -e
+
 # First do what requires to be executed as root
 # update apt cache
 apt-get update
