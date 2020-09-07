@@ -1,0 +1,37 @@
+# This is a workflow to create a release
+
+name: Build custom image for release
+on:
+  push:
+    tags:
+      - 'v*'
+    branches: [ master ]
+    
+jobs:
+  build_image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Call the script
+        run: sudo ./create_image.sh "wirepas_raspberry_image_${{ github.ref }}"          
+      - name: Create release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          draft: false
+          prerelease: false
+      - name: Upload Release Asset
+        id: upload-release-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`
+           asset_path: "wirepas_raspberry_image_${{ github.ref }}.zip"
+           asset_name: "wirepas_raspberry_image_${{ github.ref }}.zip"
+           asset_content_type: application/zip
