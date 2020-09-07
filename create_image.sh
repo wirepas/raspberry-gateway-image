@@ -47,7 +47,8 @@ umount $TMP/boot/
 umount $TMP
 rmdir $TMP
 
-ls -l ${IMAGE_FILE}
+# Rename the .img file
+mv ${IMAGE_FILE} ${1}.img
 
 # Zip back the image to be saved as artefact
-zip rpi_wirepas_gw ${IMAGE_FILE}
+zip ${1}.zip ${1}.img
