@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     # Inputs the workflow accepts.
     inputs:
-      name:
+      imageName:
         # Friendly description to be shown in the UI instead of 'name'
         description: 'Name of the final image'
         # Default value if no value is explicitly provided
@@ -21,8 +21,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Call the script
-        run: sudo ./create_image.sh
+        run: sudo ./create_image.sh ${{ github.event.inputs.imageName }}
       - name: Store artifacts
         uses: actions/upload-artifact@v2
         with:
-          path: rpi_wirepas_gw.zip
+          path: ${{ github.event.inputs.imageName }}.zip
