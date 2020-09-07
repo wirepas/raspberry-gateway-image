@@ -5,11 +5,10 @@ ConditionFileNotEmpty=/home/pi/wirepas/firstboot.sh
 
 [Service]
 ExecStart=/home/pi/wirepas/firstboot.sh
-ExecStartPost=/bin/mv /home/pi/wirepas/firstboot.sh /home/pi/wirepas/firstboot.sh.done
-# Enable/Start other services
-ExecStartPost=reboot
-Type=oneshot
-RemainAfterExit=no
+Type=simple
+# Restart until the script is executed. The script will change its name once executed successfully
+Restart=on-failure
+RestartSec=10
 
 [Install]
 WantedBy=multi-user.target

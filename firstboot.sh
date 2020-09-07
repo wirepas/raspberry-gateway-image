@@ -1,5 +1,8 @@
 #!/bin/bash
 
+# Exit on any error. It will be the case if there is no network connection
+set -e
+
 # First do what requires to be executed as root
 # update apt cache
 apt-get update
@@ -44,3 +47,9 @@ mv com.wirepas.sink.conf /etc/dbus-1/system.d/
 systemctl enable wirepasSink1.service
 systemctl enable wirepasTransport.service
 systemctl enable wirepasConfigurator.service
+
+# Rename the script once successful execution to stop execution
+mv /home/pi/wirepas/firstboot.sh /home/pi/wirepas/firstboot.sh.done 
+
+# Reboot so that other service will be started too
+reboot

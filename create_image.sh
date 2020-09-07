@@ -13,7 +13,7 @@ IMAGE_FILE=$(ls *.img)
 
 # Mount the image to update it
 TMP=$(mktemp -d)
-LOOP=$(sudo losetup --show -fP "${IMAGE_FILE}")
+LOOP=$(losetup --show -fP "${IMAGE_FILE}")
 mount ${LOOP}p2 $TMP
 mount ${LOOP}p1 $TMP/boot/
 
@@ -40,15 +40,14 @@ mkdir $TMP/boot/wirepas
 # Enable ssh
 touch $TMP/boot/ssh
 
-# cleanup
-set -e
-function cleanup {
-  umount -f $TMP/boot/
-  umount -f $TMP
-  rmdir $TMP
-}
+echo "Files copied, unmounting image"
 
-trap cleanup EXIT
+# Umount partitions
+umount $TMP/boot/
+umount $TMP
+rmdir $TMP
+
+ls -l ${IMAGE_FILE}
 
 # Zip back the image to be saved as artefact
 zip rpi_wirepas_gw ${IMAGE_FILE}
