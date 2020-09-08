@@ -40,6 +40,24 @@ mkdir $TMP/boot/wirepas
 # Enable ssh
 touch $TMP/boot/ssh
 
+# Do modification for rpi hat (to take control of /dev/ttyAMA0 instead of onboard bluetooth chip
+if grep -Fq "console=serial0,115200 console=tty1" $TMP/boot/cmdline.txt
+then
+  sed -i 's/console=serial0,115200 console=tty1 //g' $TMP/boot/cmdline.txt
+else
+  echo "Cannot update cmdline.txt"
+  exit 1
+fi
+
+if test -f $TMP/boot/config.txt
+then
+  echo "dtoverlay=pi3-disable-bt" >> $TMP/boot/config.txt
+  echo "dtoverlay=pi3-miniuart-bt" >> $TMP/boot/config.txt
+else
+  echo "Cannot update config.txt"
+  exit 1
+fi
+
 echo "Files copied, unmounting image"
 
 # Umount partitions
