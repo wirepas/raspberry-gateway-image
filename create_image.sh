@@ -2,7 +2,8 @@
 
 # Reference base image
 REF_IMAGE_URL="https://downloads.raspberrypi.org/"
-REF_IMAGE_NAME="raspios_lite_armhf_latest"
+#REF_IMAGE_NAME="raspios_lite_armhf_latest"
+REF_IMAGE_NAME="raspios_armhf_latest"
 
 # Get raspberry image
 wget ${REF_IMAGE_URL}${REF_IMAGE_NAME}
