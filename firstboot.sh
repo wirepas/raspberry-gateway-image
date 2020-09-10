@@ -10,6 +10,9 @@ apt-get update
 # Install requirements
 apt-get install -y libsystemd-dev python3-dev python3-gi python3-pip
 
+# Additionnaly add mosquitto broker for easy prototyping
+apt-get install -y mosquitto
+
 mkdir /home/pi/wirepas/install
 cd /home/pi/wirepas/install
 
