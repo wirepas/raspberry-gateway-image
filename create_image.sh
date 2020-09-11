@@ -1,15 +1,19 @@
 #!/bin/bash
 
+# $1: name of final image
+# $2: output folder
+# $3: lite or desktop
+
 # Reference base image
-if [ "$2" == "lite" ]
+if [ "$3" == "lite" ]
 then
   REF_IMAGE_NAME="raspios_lite_armhf_latest"
-  BUILD_FOLDER="lite"
 else
   REF_IMAGE_NAME="raspios_armhf_latest"
-  BUILD_FOLDER="desktop"
 fi
 echo "Base image is $REF_IMAGE_NAME"
+
+BUILD_FOLDER=$2
 
 REF_IMAGE_URL="https://downloads.raspberrypi.org/"
 
