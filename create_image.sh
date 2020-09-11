@@ -7,7 +7,7 @@ then
 else
   REF_IMAGE_NAME="raspios_armhf_latest"
 fi
-echo "Base image is $REF_IMAGE_NAME
+echo "Base image is $REF_IMAGE_NAME"
 
 REF_IMAGE_URL="https://downloads.raspberrypi.org/"
 
