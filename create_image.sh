@@ -74,6 +74,3 @@ rmdir $TMP
 
 # Rename the .img file
 mv ${IMAGE_FILE} ${1}.img
-
-# Zip back the image to be saved as artefact
-zip ${1}.zip ${1}.img
