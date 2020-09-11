@@ -1,9 +1,15 @@
 #!/bin/bash
 
 # Reference base image
+if [ "$2" == "lite"]
+then
+  REF_IMAGE_NAME="raspios_lite_armhf_latest"
+else
+  REF_IMAGE_NAME="raspios_armhf_latest"
+fi
+echo "Base image is $REF_IMAGE_NAME
+
 REF_IMAGE_URL="https://downloads.raspberrypi.org/"
-#REF_IMAGE_NAME="raspios_lite_armhf_latest"
-REF_IMAGE_NAME="raspios_armhf_latest"
 
 # Get raspberry image
 wget ${REF_IMAGE_URL}${REF_IMAGE_NAME}
