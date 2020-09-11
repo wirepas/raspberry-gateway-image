@@ -2,9 +2,8 @@
 
 name: Build custom image for release
 on:
-  push:
-    tags:
-      - 'v*'
+  release:
+    type: [created]
     
 jobs:
   build_image:
@@ -16,23 +15,18 @@ jobs:
         run: sudo ./create_image.sh "wirepas_rpi_desktop_${{ github.event.release.tag_name }}"
       - name: Create Lite image
         run: sudo ./create_image.sh "wirepas_rpi_lite_${{ github.event.release.tag_name }}" lite          
-      - name: Create release
-        id: create_release
-        uses: actions/create-release@v1
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          draft: false
-          prerelease: false
       - name: Upload Desktop image
         id: upload-desktop-asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-           upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`
+           upload_url: ${{ steps.get_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`
            asset_path: "wirepas_rpi_desktop_${{ github.event.release.tag_name }}.img"
            asset_name: "wirepas_rpi_desktop_${{ github.event.release.tag_name }}.zip"
            asset_content_type: application/zip
@@ -42,7 +36,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-           upload_url: ${{ steps.create_release.outputs.upload_url }}
+           upload_url: ${{ steps.get_release.outputs.upload_url }}
            asset_path: "wirepas_rpi_lite_${{ github.event.release.tag_name }}.img"
            asset_name: "wirepas_rpi_lite_${{ github.event.release.tag_name }}.zip"
            asset_content_type: application/zip
