@@ -24,8 +24,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Call the script
-        run: sudo ./create_image.sh ${{ github.event.inputs.imageName }} ${{ github.event.inputs.baseImage }}
+        run: sudo ./create_image.sh ${{ github.event.inputs.imageName }} tmp ${{ github.event.inputs.baseImage }}
       - name: Store artifacts
         uses: actions/upload-artifact@v2
         with:
-          path: ${{ github.event.inputs.imageName }}.img
+          path: tmp/${{ github.event.inputs.imageName }}.zip
