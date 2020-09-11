@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Reference base image
-if [ "$2" == "lite"]
+if [ "$2" == "lite" ]
 then
   REF_IMAGE_NAME="raspios_lite_armhf_latest"
 else
