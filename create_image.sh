@@ -4,12 +4,18 @@
 if [ "$2" == "lite" ]
 then
   REF_IMAGE_NAME="raspios_lite_armhf_latest"
+  BUILD_FOLDER="lite"
 else
   REF_IMAGE_NAME="raspios_armhf_latest"
+  BUILD_FOLDER="desktop"
 fi
 echo "Base image is $REF_IMAGE_NAME"
 
 REF_IMAGE_URL="https://downloads.raspberrypi.org/"
+
+# Go to build folder
+mkdir -p ${BUILD_FOLDER}
+cd ${BUILD_FOLDER}
 
 # Get raspberry image
 wget ${REF_IMAGE_URL}${REF_IMAGE_NAME}
@@ -28,16 +34,16 @@ mount ${LOOP}p1 $TMP/boot/
 # Create wirepas folder to test
 mkdir $TMP/home/pi/wirepas
 
-cp wirepasSink1.service $TMP/etc/systemd/system/wirepasSink1.service
-cp wirepasTransport.service $TMP/etc/systemd/system/wirepasTransport.service
-cp wirepasConfigurator.service $TMP/etc/systemd/system/wirepasConfigurator.service
+cp ../wirepasSink1.service $TMP/etc/systemd/system/wirepasSink1.service
+cp ../wirepasTransport.service $TMP/etc/systemd/system/wirepasTransport.service
+cp ../wirepasConfigurator.service $TMP/etc/systemd/system/wirepasConfigurator.service
 
 # Copy script to be executed only the first time:
-cp firstboot.sh $TMP/home/pi/wirepas
+cp ../firstboot.sh $TMP/home/pi/wirepas
 chmod +x $TMP/home/pi/wirepas/firstboot.sh
 
 # Add systemd job to execute it at first boot
-cp wirepasFirstboot.service $TMP/etc/systemd/system/wirepasFirstboot.service
+cp ../wirepasFirstboot.service $TMP/etc/systemd/system/wirepasFirstboot.service
 # Enable this service manually
 ln -s $TMP/lib/systemd/system/wirepasFirstboot.service $TMP/etc/systemd/system/multi-user.target.wants
 
