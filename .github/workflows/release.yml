@@ -12,8 +12,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v2
-      - name: Call the script
-        run: sudo ./create_image.sh "wirepas_raspberry_image_${{ github.event.release.tag_name }}"          
+      - name: Create Desktop image
+        run: sudo ./create_image.sh "wirepas_rpi_desktop_${{ github.event.release.tag_name }}"
+      - name: Create Lite image
+        run: sudo ./create_image.sh "wirepas_rpi_lite_${{ github.event.release.tag_name }}" lite          
       - name: Create release
         id: create_release
         uses: actions/create-release@v1
@@ -24,13 +26,23 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
-      - name: Upload Release Asset
-        id: upload-release-asset
+      - name: Upload Desktop image
+        id: upload-desktop-asset
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
            upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`
-           asset_path: "wirepas_raspberry_image_${{ github.event.release.tag_name }}.zip"
-           asset_name: "wirepas_raspberry_image_${{ github.event.release.tag_name }}.zip"
+           asset_path: "wirepas_rpi_desktop_${{ github.event.release.tag_name }}.img"
+           asset_name: "wirepas_rpi_desktop_${{ github.event.release.tag_name }}.zip"
+           asset_content_type: application/zip
+      - name: Upload Lite image
+        id: upload-lite-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+           upload_url: ${{ steps.create_release.outputs.upload_url }}
+           asset_path: "wirepas_rpi_lite_${{ github.event.release.tag_name }}.img"
+           asset_name: "wirepas_rpi_lite_${{ github.event.release.tag_name }}.zip"
            asset_content_type: application/zip
