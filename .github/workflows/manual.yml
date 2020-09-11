@@ -13,6 +13,9 @@ on:
         default: 'wirepas_raspberry_image'
         # Input has to be provided for the workflow to run
         required: true
+      baseImage:
+        description: 'Set to lite to use lite base image instead of Desktop'
+        default: ''
 
 jobs:
   build_image:
@@ -21,8 +24,8 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: Call the script
-        run: sudo ./create_image.sh ${{ github.event.inputs.imageName }}
+        run: sudo ./create_image.sh ${{ github.event.inputs.imageName }} ${{ github.event.inputs.baseImage }}
       - name: Store artifacts
         uses: actions/upload-artifact@v2
         with:
-          path: ${{ github.event.inputs.imageName }}.zip
+          path: ${{ github.event.inputs.imageName }}.img
