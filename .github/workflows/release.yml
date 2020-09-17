@@ -1,0 +1,42 @@
+# This is a workflow to create a release
+
+name: Build custom image for release
+on:
+  release:
+    types: [created]
+
+jobs:
+  build_image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Create Desktop image
+        run: sudo ./create_image.sh "wirepas_rpi_desktop_${{ github.event.release.tag_name }}" desktop desktop
+      - name: Create Lite image
+        run: sudo ./create_image.sh "wirepas_rpi_lite_${{ github.event.release.tag_name }}" lite lite
+      - name: Get release
+        id: get_release
+        uses: bruceadams/get-release@v1.2.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload Desktop image
+        id: upload-desktop-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+           upload_url: ${{ steps.get_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`
+           asset_path: "desktop/wirepas_rpi_desktop_${{ github.event.release.tag_name }}.zip"
+           asset_name: "wirepas_rpi_desktop_${{ github.event.release.tag_name }}.zip"
+           asset_content_type: application/zip
+      - name: Upload Lite image
+        id: upload-lite-asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+           upload_url: ${{ steps.get_release.outputs.upload_url }}
+           asset_path: "lite/wirepas_rpi_lite_${{ github.event.release.tag_name }}.zip"
+           asset_name: "wirepas_rpi_lite_${{ github.event.release.tag_name }}.zip"
+           asset_content_type: application/zip
