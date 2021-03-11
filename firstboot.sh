@@ -17,8 +17,8 @@ mkdir /home/pi/wirepas/install
 cd /home/pi/wirepas/install
 
 # Install python gateway part with a hack to avoid grpc installation (not required)
-wget https://github.com/wirepas/gateway/releases/download/v1.3.0/wirepas_gateway-1.3.0.tar.gz
-tar -xf wirepas_gateway-1.3.0.tar.gz
+wget https://github.com/wirepas/gateway/releases/download/v1.3.1/wirepas_gateway-1.3.1.tar.gz
+tar -xf wirepas_gateway-1.3.1.tar.gz
 
 # Install wirepas-messaging manually to avoid installing grpcio
 sudo -u pi pip3 install protobuf==3.10.0 --user
@@ -26,11 +26,11 @@ sudo -u pi pip3 install --no-deps wirepas_messaging==1.2.0 --user
 
 # Install manually gateway too to avoid installing grpcio again
 # Remove wirepas-messaging from deps
-sed -i.bak '/wirepas_messaging/d' wirepas_gateway-1.3.0/requirements.txt
-sudo -u pi pip3 install -r wirepas_gateway-1.3.0/requirements.txt --no-deps wirepas_gateway-1.3.0.tar.gz --user
+sed -i.bak '/wirepas_messaging/d' wirepas_gateway-1.3.1/requirements.txt
+sudo -u pi pip3 install -r wirepas_gateway-1.3.1/requirements.txt --no-deps wirepas_gateway-1.3.1.tar.gz --user
 
 # Install sink service
-wget https://github.com/wirepas/gateway/releases/download/v1.3.0/sinkService-arm.tar.gz
+wget https://github.com/wirepas/gateway/releases/download/v1.3.1/sinkService-arm.tar.gz
 tar -xf sinkService-arm.tar.gz
 mv sinkService /home/pi/wirepas/
 
