@@ -7,7 +7,7 @@ ConditionFileNotEmpty=/boot/wirepas/sink.env
 Type=oneshot
 User=pi
 EnvironmentFile=/boot/wirepas/sink.env
-ExecStart=/home/pi/wirepas/configure_node.py set -s sink1 -S=yes
+ExecStart=/home/pi/.local/bin/wm-node-conf set -s sink1 -S=yes
 ExecStartPost=sudo mv /boot/wirepas/sink.env /boot/wirepas/sink.success
 
 [Install]
