@@ -23,6 +23,7 @@ sudo -u pi pip3 install wirepas_gateway-1.4.0.tar.gz --user
 # Install sink service
 wget https://github.com/wirepas/gateway/releases/download/v1.4.0/sinkService-v1.4.0-arm
 mv sinkService-v1.4.0-arm /home/pi/wirepas/sinkService
+chmod +x /home/pi/wirepas/sinkService
 
 # Get dbus rights file
 wget https://raw.githubusercontent.com/wirepas/gateway/master/sink_service/com.wirepas.sink.conf
