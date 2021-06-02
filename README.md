@@ -10,6 +10,17 @@ Other Raspeberry Pi parameters like Network settings, Wi-Fi and others setting a
 The entry point for this repository is the [create_image.sh](create_image.sh) script.
 This script downloads an official Raspberry pi image and mounts it as a loopback to modify some files and add new ones.
 
+The script is run followingly
+```
+./create_image.sh my_gateway my_gateway_folder lite
+```
+where
+
+* $1: name of final image
+* $2: output folder
+* $3: lite or desktop
+
+
 Here is the list of modifications done:
 
 1. Enabling ssh by default
