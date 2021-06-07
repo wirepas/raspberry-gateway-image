@@ -29,6 +29,7 @@ jobs:
         
       - name: install required package
         run: |
+          apt-get update
           apt-get install coreutils quilt parted qemu-user-static debootstrap zerofree zip \
                  dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl bc \
                  qemu-utils kpartx
