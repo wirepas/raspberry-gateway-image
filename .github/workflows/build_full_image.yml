@@ -1,0 +1,17 @@
+# This is a workflow to build image with pi-gen tool
+
+name: Build Full Rpi image from scratch
+
+on:
+  pull_request:
+  
+  workflow_dispatch:
+
+jobs:
+  build_image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Nothing yet
+        run: ls
