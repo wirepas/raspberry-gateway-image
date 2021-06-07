@@ -18,7 +18,7 @@ jobs:
       - name: checkout pi-gen
         uses: actions/checkout@v2
         with:
-          repository: 'https://github.com/RPi-Distro/pi-gen.git'
+          repository: 'RPi-Distro/pi-gen'
           ref: '2021-05-07-raspbian-buster'
           path: 'pi-gen'
              
