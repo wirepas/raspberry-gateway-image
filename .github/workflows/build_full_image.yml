@@ -12,6 +12,21 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - name: checkout our repo
+        uses: actions/checkout@v2
+        
+      - name: checkout pi-gen
+        uses: actions/checkout@v2
+        with:
+          repository: 'https://github.com/RPi-Distro/pi-gen.git'
+          ref: '2021-05-07-raspbian-buster'
+          path: 'pi-gen'
+             
       - name: Nothing yet
         run: ls
+        
+      - name: install required package
+        run: |
+            sudo apt-get install coreutils quilt parted qemu-user-static debootstrap zerofree zip \
+                 dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl bc \
+                 qemu-utils kpartx
