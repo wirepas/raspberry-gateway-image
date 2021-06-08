@@ -11,7 +11,7 @@ jobs:
   build_image:
     runs-on: ubuntu-latest
     container:
-      image: ubuntu:xenial
+      image: i386/debian:buster
 
     steps:
       - name: add git repo for recent version
