@@ -43,7 +43,7 @@ jobs:
       - name: Copy our own sub step
         run: |
           cp -r step/04-install-docker pi-gen/stage2/
-          chmod a+x pi-gen/stage2/04-install-docker/00-run.sh
+          chmod a+x pi-gen/stage2/04-install-docker/00-run-chroot.sh
      
       - name: create config
         run: |
