@@ -25,7 +25,7 @@ jobs:
           apt-get -y update
           apt-get -y install coreutils quilt parted qemu-user-static debootstrap zerofree zip \
                  dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl bc \
-                 qemu-utils kpartx
+                 qemu-utils kpartx xxd kmod
                  
       - name: check git version
         run: git --version
