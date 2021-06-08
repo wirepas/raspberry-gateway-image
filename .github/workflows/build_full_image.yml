@@ -14,6 +14,13 @@ jobs:
       image: ubuntu:xenial
 
     steps:
+      - name: install required package
+        run: |
+          apt-get -y update
+          apt-get -y install coreutils quilt parted qemu-user-static debootstrap zerofree zip \
+                 dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl bc \
+                 qemu-utils kpartx
+                 
       - name: checkout our repo
         uses: actions/checkout@v2
         
@@ -26,13 +33,6 @@ jobs:
              
       - name: Nothing yet
         run: ls
-        
-      - name: install required package
-        run: |
-          apt-get -y update
-          apt-get -y install coreutils quilt parted qemu-user-static debootstrap zerofree zip \
-                 dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl bc \
-                 qemu-utils kpartx
      
       - name: create config
         run: |
