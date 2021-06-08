@@ -16,10 +16,15 @@ jobs:
     steps:
       - name: install required package
         run: |
+          # add git repo to have a recent version install
+          add-apt-repository ppa:git-core/ppa
           apt-get -y update
           apt-get -y install coreutils quilt parted qemu-user-static debootstrap zerofree zip \
                  dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl bc \
                  qemu-utils kpartx
+                 
+      - name: check git version
+        run: git --version
                  
       - name: checkout our repo
         uses: actions/checkout@v2
