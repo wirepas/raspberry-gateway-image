@@ -33,3 +33,22 @@ jobs:
           apt-get -y install coreutils quilt parted qemu-user-static debootstrap zerofree zip \
                  dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl bc \
                  qemu-utils kpartx
+     
+      - name: create config
+        run: |
+           touch myconfig
+           echo "IMG_NAME='Raspbian'" >> myconfig
+           echo "ENABLE_SSH=1" >> myconfig
+           echo "TARGET_HOSTNAME='wirepasgw'" >> myconfig
+           echo "FIRST_USER_NAME='wirepas'" >> myconfig
+           echo "FIRST_USER_PASS='wirepass'" >> myconfig
+           echo "STAGE_LIST"="stage0 stage1 stage2" >> myconfig
+           
+      - name: check config
+        run: cat myconfig
+        
+      - name: run script
+        run: ./build.sh -c ../myconfig
+        working-directory: pi-gen
+           
+           
