@@ -10,25 +10,25 @@ on:
 jobs:
   build_image:
     runs-on: ubuntu-latest
-    container:
-      image: i386/debian:buster
+    #container:
+    #  image: i386/debian:buster
 
     steps:
-      - name: add git repo for recent version
-        run: |
-          apt-get -y update
-          apt-get -y install software-properties-common
-          add-apt-repository ppa:git-core/ppa
+    #  - name: add git repo for recent version
+    #    run: |
+    #      apt-get -y update
+    #      apt-get -y install software-properties-common
+    #      add-apt-repository ppa:git-core/ppa
           
-      - name: install required package
-        run: |
-          apt-get -y update
-          apt-get -y install coreutils quilt parted qemu-user-static debootstrap zerofree zip \
-                 dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl bc \
-                 qemu-utils kpartx xxd kmod
+    #  - name: install required package
+    #    run: |
+    #      apt-get -y update
+    #      apt-get -y install coreutils quilt parted qemu-user-static debootstrap zerofree zip \
+    #             dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl bc \
+    #             qemu-utils kpartx xxd kmod
                  
-      - name: check git version
-        run: git --version
+    #  - name: check git version
+    #    run: git --version
                  
       - name: checkout our repo
         uses: actions/checkout@v2
@@ -45,19 +45,21 @@ jobs:
      
       - name: create config
         run: |
-           touch myconfig
-           echo "IMG_NAME='Raspbian_Test'" >> myconfig
-           echo "ENABLE_SSH=1" >> myconfig
-           echo "TARGET_HOSTNAME='wirepasgw'" >> myconfig
-           echo "FIRST_USER_NAME='wirepas'" >> myconfig
-           echo "FIRST_USER_PASS='wirepass'" >> myconfig
-           echo "STAGE_LIST=\"stage0 stage1 stage2\"" >> myconfig
+           touch config
+           echo "IMG_NAME='Raspbian_Test'" >> config
+           echo "ENABLE_SSH=1" >> config
+           echo "TARGET_HOSTNAME='wirepasgw'" >> config
+           echo "FIRST_USER_NAME='wirepas'" >> config
+           echo "FIRST_USER_PASS='wirepass'" >> config
+           echo "STAGE_LIST=\"stage0 stage1 stage2\"" >> config
+        working-directory: pi-gen
            
       - name: check config
-        run: cat myconfig
+        run: cat config
+        working-directory: pi-gen
         
-      - name: run script
-        run: ./build.sh -c ../myconfig
+      - name: run script with docker
+        run: ./build-docker.sh 
         working-directory: pi-gen
            
            
