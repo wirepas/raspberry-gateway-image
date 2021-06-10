@@ -47,11 +47,11 @@ jobs:
         working-directory: pi-gen
 
       - name: check output
-        run: ls -l pi_gen/deploy/
+        run: ls -l pi-gen/deploy/
 
       - name: Store artifacts
         uses: actions/upload-artifact@v2
         with:
-          path: pi_gen/deploy/image*
+          path: pi-gen/deploy/image*
            
            
