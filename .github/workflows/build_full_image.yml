@@ -10,26 +10,8 @@ on:
 jobs:
   build_image:
     runs-on: ubuntu-latest
-    #container:
-    #  image: i386/debian:buster
 
     steps:
-    #  - name: add git repo for recent version
-    #    run: |
-    #      apt-get -y update
-    #      apt-get -y install software-properties-common
-    #      add-apt-repository ppa:git-core/ppa
-          
-    #  - name: install required package
-    #    run: |
-    #      apt-get -y update
-    #      apt-get -y install coreutils quilt parted qemu-user-static debootstrap zerofree zip \
-    #             dosfstools bsdtar libcap2-bin grep rsync xz-utils file git curl bc \
-    #             qemu-utils kpartx xxd kmod
-                 
-    #  - name: check git version
-    #    run: git --version
-                 
       - name: checkout our repo
         uses: actions/checkout@v2
         
@@ -63,5 +45,13 @@ jobs:
       - name: run script with docker
         run: ./build-docker.sh 
         working-directory: pi-gen
+
+      - name: check output
+        run: ls -l pi_gen/deploy/
+
+      - name: Store artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          path: pi_gen/deploy/image*
            
            
