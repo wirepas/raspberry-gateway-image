@@ -11,8 +11,10 @@ Type=oneshot
 RemainAfterExit=yes
 User=wirepas
 
-ExecStartPre=/home/wirepas/.local/bin/docker-compose down
-ExecStart=/home/wirepas/.local/bin/docker-compose up -d
+# Stop current containers and pull just in case we use latest tag
+ExecStartPre=docker-compose down && docker-compose pull
+# Start the gateway
+ExecStart=docker-compose up -d
 
 [Install]
 WantedBy=multi-user.target
