@@ -12,4 +12,7 @@ install -m 755 files/wirepasGatewayUpdate.service	"${ROOTFS_DIR}/etc/systemd/sys
 echo "Execute install script"
 on_chroot << EOF
 systemctl enable wirepasGatewayUpdate.service
+
+# To speed up first build, checkout latest tag
+docker-compose -f /home/${FIRST_USER_NAME}/docker-compose.yml pull
 EOF
