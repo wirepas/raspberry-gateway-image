@@ -26,6 +26,7 @@ jobs:
         run: |
           cp -r step/* pi-gen/stage2/
           #chmod a+x pi-gen/stage2/04-install-docker/00-run-chroot.sh
+          chmod a+x pi-gen/stage2/06-gateway-service/01-run.sh
      
       - name: create config
         run: |
