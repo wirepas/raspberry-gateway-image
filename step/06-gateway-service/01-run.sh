@@ -17,9 +17,19 @@ on_chroot << EOF
 systemctl enable wirepasGatewayUpdate.service
 
 cd /home/${FIRST_USER_NAME}
-# Download all images to speed up first boot
+# Download all images to speed up first boot and generate tar file out of it
 ./download-frozen-image-v2.sh transport_service wirepas/gateway_transport_service:latest
+tar -cC 'transport_service' -f transport_service.tar .
+rm -rf transport_service
+
 ./download-frozen-image-v2.sh sink_service wirepas/gateway_sink_service:latest
+tar -cC 'sink_service' -f sink_service.tar .
+rm -rf sink_service
+
 ./download-frozen-image-v2.sh dbus_service wirepas/gateway_dbus_service:latest
+tar -cC 'dbus_service' -f dbus_service.tar .
+rm -rf dbus_service
+
+rm download-frozen-image-v2.sh
 
 EOF
