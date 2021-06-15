@@ -13,7 +13,8 @@ echo "Execute install script"
 on_chroot << EOF
 systemctl enable wirepasGatewayUpdate.service
 
-systemctl start docker
+# Start daemon manually to be able to checkout images
+dockerd
 
 # TODO: to be removed
 docker info
