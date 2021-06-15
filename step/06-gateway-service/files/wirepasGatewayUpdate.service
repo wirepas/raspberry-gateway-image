@@ -11,8 +11,14 @@ Type=oneshot
 RemainAfterExit=yes
 User=wirepas
 
+# Preload all the latest images
+ExecStartPre=-tar -cC 'transport_service' . | docker load && rm -r transport_service
+ExecStartPre=-tar -cC 'sink_service' . | docker load && rm -r sink_service
+ExecStartPre=-tar -cC 'dbus_service' . | docker load && rm -r debus_service
+
 # Stop current containers and pull just in case we use latest tag
 ExecStartPre=docker-compose down && docker-compose pull
+
 # Start the gateway
 ExecStart=docker-compose up -d
 
