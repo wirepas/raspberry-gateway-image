@@ -28,16 +28,9 @@ jobs:
           #chmod a+x pi-gen/stage2/04-install-docker/00-run-chroot.sh
           chmod a+x pi-gen/stage2/06-gateway-service/01-run.sh
      
-      - name: create config
+      - name: copy config
         run: |
-           touch config
-           echo "IMG_NAME='Raspbian_Test'" >> config
-           echo "ENABLE_SSH=1" >> config
-           echo "TARGET_HOSTNAME='wirepasgw'" >> config
-           echo "FIRST_USER_NAME='wirepas'" >> config
-           echo "FIRST_USER_PASS='wirepass'" >> config
-           echo "STAGE_LIST=\"stage0 stage1 stage2\"" >> config
-        working-directory: pi-gen
+           cp config pi-gen/
            
       - name: check config
         run: cat config

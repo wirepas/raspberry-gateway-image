@@ -1,0 +1,7 @@
+# Config file to customize build
+IMG_NAME='Raspbian_Wirepas_Gateway'
+ENABLE_SSH=1
+TARGET_HOSTNAME='wirepasgw'
+FIRST_USER_NAME='wirepas'
+FIRST_USER_PASS='wirepass'
+STAGE_LIST="stage0 stage1 stage2"
