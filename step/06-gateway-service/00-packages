@@ -1,0 +1,4 @@
+# Additionnaly add mosquitto broker for easy prototyping
+mosquitto
+# Add jq needed to retrieve docker images
+jq

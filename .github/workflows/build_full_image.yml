@@ -1,0 +1,51 @@
+# This is a workflow to build image with pi-gen tool
+
+name: Build Full Rpi image from scratch
+
+on:
+  pull_request:
+  
+  workflow_dispatch:
+
+jobs:
+  build_image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout our repo
+        uses: actions/checkout@v2
+        
+      - name: checkout pi-gen
+        uses: actions/checkout@v2
+        with:
+          repository: 'RPi-Distro/pi-gen'
+          ref: '2021-05-07-raspbian-buster'
+          path: 'pi-gen'
+             
+      - name: Copy our own sub step
+        run: |
+          cp -r step/* pi-gen/stage2/
+          #chmod a+x pi-gen/stage2/04-install-docker/00-run-chroot.sh
+          chmod a+x pi-gen/stage2/06-gateway-service/01-run.sh
+     
+      - name: copy config
+        run: |
+           cp config pi-gen/
+           
+      - name: check config
+        run: cat config
+        working-directory: pi-gen
+        
+      - name: run script with docker
+        run: ./build-docker.sh 
+        working-directory: pi-gen
+
+      - name: check output
+        run: ls -l pi-gen/deploy/
+
+      - name: Store artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          path: pi-gen/deploy/image*
+           
+           
