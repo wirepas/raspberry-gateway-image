@@ -46,7 +46,7 @@ services:
   sink-service:
     image: wirepas/gateway_sink_service:${GATEWAY_TAG:-latest}
     container_name: sink-service
-    restart: on-failure
+    restart: always
     depends_on:
       - dbus-service
     devices:
