@@ -3,9 +3,10 @@
 name: Build Full Rpi image from scratch
 
 on:
-  pull_request:
-  
   workflow_dispatch:
+  
+  release:
+    types: [created]
 
 jobs:
   build_image:
@@ -25,27 +26,55 @@ jobs:
       - name: Copy our own sub step
         run: |
           cp -r step/* pi-gen/stage2/
-          #chmod a+x pi-gen/stage2/04-install-docker/00-run-chroot.sh
           chmod a+x pi-gen/stage2/06-gateway-service/01-run.sh
      
       - name: copy config
         run: |
            cp config pi-gen/
-           
-      - name: check config
-        run: cat config
-        working-directory: pi-gen
         
       - name: run script with docker
         run: ./build-docker.sh 
         working-directory: pi-gen
 
-      - name: check output
-        run: ls -l pi-gen/deploy/
-
       - name: Store artifacts
         uses: actions/upload-artifact@v2
         with:
           path: pi-gen/deploy/image*
+          
+      - name: Get release
+        if: github.event_name == 'release'
+        id: get_release
+        uses: bruceadams/get-release@v1.2.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Rename artifacts before release
+        if: github.event_name == 'release'
+        working-directory: pi-gen/deploy
+        run: \
+          mv *Wirepas_Gateway-lite.zip Wirepas_Gateway_${{ github.event.release.tag_name }}-lite.zip
+          mv *Wirepas_Gateway.zip Wirepas_Gateway_${{ github.event.release.tag_name }}.zip
+
+      - name: Upload Desktop image
+        if: github.event_name == 'release'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+           upload_url: ${{ steps.get_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`
+           asset_path: "pi-gen/deploy/Wirepas_Gateway_${{ github.event.release.tag_name }}.zip"
+           asset_name: "Wirepas_Gateway_${{ github.event.release.tag_name }}.zip"
+           asset_content_type: application/zip
            
+      - name: Upload Lite image
+        if: github.event_name == 'release'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+           upload_url: ${{ steps.get_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`
+           asset_path: "pi-gen/deploy/Wirepas_Gateway_${{ github.event.release.tag_name }}-lite.zip"
+           asset_name: "Wirepas_Gateway_${{ github.event.release.tag_name }}-lite.zip"
+           asset_content_type: application/zip
+
            
