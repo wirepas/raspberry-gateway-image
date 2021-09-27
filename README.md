@@ -57,23 +57,23 @@ docker-compose logs
 ## Observe traffic on dbus
 To observe packets received from sink(s) on dbus, execute this command:
 ```bash
-docker run -v wirepas_dbus-volume:/var/run/dbus -ti wirepas/gateway_transport_service wm-dbus-print
+docker run --rm -v wirepas_dbus-volume:/var/run/dbus -ti wirepas/gateway_transport_service wm-dbus-print
 ```
 
 ## Get/set sink(s) configuration
 To see the current sink(s) configuration, please execute this command:
 ```bash
-docker run -v wirepas_dbus-volume:/var/run/dbus wirepas/gateway_transport_service wm-node-conf list
+docker run --rm -v wirepas_dbus-volume:/var/run/dbus wirepas/gateway_transport_service wm-node-conf list
 ```
 
 wm-node-conf allows to configure sink locally too. To see its usage and different options, execute this command:
 ```bash
-docker run -v wirepas_dbus-volume:/var/run/dbus wirepas/gateway_transport_service wm-node-conf
+docker run --rm -v wirepas_dbus-volume:/var/run/dbus wirepas/gateway_transport_service wm-node-conf
 ```
 
-For example, folowing command allows you to stop a sink named sink1:
+For example, following command allows you to stop a sink named sink1:
 ```bash
-docker run -v wirepas_dbus-volume:/var/run/dbus wirepas/gateway_transport_service wm-node-conf set -s sink1 -S False
+docker run --rm -v wirepas_dbus-volume:/var/run/dbus wirepas/gateway_transport_service wm-node-conf set -s sink1 -S False
 ```
 
 # How are released image built?
