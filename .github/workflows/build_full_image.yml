@@ -51,7 +51,7 @@ jobs:
       - name: Rename artifacts before release
         if: github.event_name == 'release'
         working-directory: pi-gen/deploy
-        run: \
+        run: |
           mv *Wirepas_Gateway-lite.zip Wirepas_Gateway_${{ github.event.release.tag_name }}-lite.zip
           mv *Wirepas_Gateway.zip Wirepas_Gateway_${{ github.event.release.tag_name }}.zip
 
