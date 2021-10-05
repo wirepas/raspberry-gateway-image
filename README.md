@@ -44,7 +44,7 @@ By default, SSH is enabled on this image with following credentials:
 
 Login  | Password
 ----   | --------
-wirepas| wirepas**s**
+wirepas| wirepas_pw
 
 Hostname is set to **wirepasgw**
 
