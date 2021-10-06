@@ -39,7 +39,7 @@ jobs:
            qemu-utils kpartx
    
       - name: run build script
-        run: ./build.sh 
+        run: sudo ./build.sh 
         working-directory: pi-gen
 
       - name: Store artifacts
