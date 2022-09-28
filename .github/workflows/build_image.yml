@@ -1,0 +1,30 @@
+# This is a standard workflow to build any flavour of Raspberry Pi Wirepas Gateway image
+
+name: Build Rpi image from scratch
+
+# Controls when the workflow will run
+on:
+
+  release:
+    types: [created]
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+    inputs:
+      debian_distro:
+        description: 'The Raspberry Pi debian distribution to build from (e.g. buster or bullseye)'
+        required: true
+        default: 'buster'
+        type: string
+      img_type:
+        description: 'The type of image to build (e.g. lite or desktop)'
+        required: false
+        default: 'lite'
+        type: string
+
+jobs:
+  build_image:
+    uses: ./.github/workflows/generic_image_builder.yml
+    with:
+      img_type: ${{ inputs.img_type }}
+      debian_distro: ${{ inputs.debian_distro }}

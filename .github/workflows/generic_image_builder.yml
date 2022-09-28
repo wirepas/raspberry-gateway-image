@@ -1,0 +1,103 @@
+# This is a workflow to build image with pi-gen tool
+
+name: Template workflow to build a full raspberry gateway image
+
+on:
+  workflow_call:
+    inputs:
+      debian_distro:
+        description: 'The Raspberry Pi debian distribution to build from (e.g. buster or bullseye)'
+        required: true
+        default: 'buster'
+        type: string
+      img_type:
+        description: 'The type of image to build (e.g. lite or desktop)'
+        required: true
+        default: 'lite'
+        type: string
+
+env:
+  # Mapping between the build type desired and the number of stages included in pi-gen build
+  # lite includes stage 0 to stage 2
+  lite: 2
+  # desktop includes stage 0 to stage 4
+  desktop: 4
+
+jobs:
+  build_image:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: checkout our repo
+        uses: actions/checkout@v2
+
+      - name: find latest ${{ inputs.debian_distro }} tag on pi-gen repository
+        id: latest_tag
+        uses: tdemin/find-latest-tag@v1
+        with:
+          repo: https://github.com/RPi-Distro/pi-gen.git
+          tag: '*${{ inputs.debian_distro }}*'
+
+      - name: checkout pi-gen for buster
+        if: inputs.debian_distro == 'buster'
+        uses: actions/checkout@v2
+        with:
+          repository: 'RPi-Distro/pi-gen'
+          ref: ${{ steps.latest_tag.outputs.tag }}
+          path: 'pi-gen'
+
+      - name: Copy our own sub step for the ${{ inputs.debian_distro }}
+        run: |
+          cp -r step/${{ inputs.debian_distro }}/* pi-gen/stage2/
+          chmod a+x pi-gen/stage2/06-gateway-service/01-run.sh
+
+      - name: copy config
+        run: |
+           for i in {0..${{ env[inputs.img_type] }}}; do var+="stage$i "; done; echo "STAGE_LIST=\"${var}\"" >> config
+
+      - name: run script with docker
+        run: ./build-docker.sh
+        working-directory: pi-gen
+
+      - name: Store artifacts
+        uses: actions/upload-artifact@v2
+        with:
+          path: pi-gen/deploy/image*
+          
+      - name: Get release
+        if: github.event_name == 'release'
+        id: get_release
+        uses: bruceadams/get-release@v1.2.1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
+      - name: Rename artifacts before release
+        if: github.event_name == 'release'
+        working-directory: pi-gen/deploy
+        run: |
+          mv *Wirepas_Gateway-lite.zip Wirepas_Gateway_${{ github.event.release.tag_name }}-lite.zip
+          mv *Wirepas_Gateway.zip Wirepas_Gateway_${{ github.event.release.tag_name }}.zip
+
+      - name: Upload Desktop image
+        if: github.event_name == 'release'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+           upload_url: ${{ steps.get_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`
+           asset_path: "pi-gen/deploy/Wirepas_Gateway_${{ github.event.release.tag_name }}.zip"
+           asset_name: "Wirepas_Gateway_${{ github.event.release.tag_name }}.zip"
+           asset_content_type: application/zip
+           
+      - name: Upload Lite image
+        if: github.event_name == 'release'
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+           upload_url: ${{ steps.get_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`
+           asset_path: "pi-gen/deploy/Wirepas_Gateway_${{ github.event.release.tag_name }}-lite.zip"
+           asset_name: "Wirepas_Gateway_${{ github.event.release.tag_name }}-lite.zip"
+           asset_content_type: application/zip
+
+           

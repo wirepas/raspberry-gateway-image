@@ -1,0 +1,32 @@
+[Unit]
+Description=Wirepas Docker gateway update
+After=docker.service network-online.target
+Requires=docker.service network-online.target
+ConditionFileNotEmpty=/boot/wirepas/gateway.env
+
+[Service]
+EnvironmentFile=/boot/wirepas/gateway.env
+WorkingDirectory=/home/wirepas/
+Type=oneshot
+RemainAfterExit=yes
+User=wirepas
+
+# Preload all the latest images if they are here (first boot)
+ExecStartPre=-docker load --input transport_service.tar
+ExecStartPre=-docker load --input sink_service.tar
+ExecStartPre=-docker load --input dbus_service.tar
+
+# Pull just in case we use latest or egde tag
+ExecStartPre=-docker compose pull
+
+# Start the gateway
+ExecStart=docker compose up -d
+
+# Cleanup our preloaded images
+ExecStartPost=-rm transport_service.tar
+ExecStartPost=-rm sink_service.tar
+ExecStartPost=-rm dbus_service.tar
+
+
+[Install]
+WantedBy=multi-user.target
