@@ -6,7 +6,7 @@ name: Build Rpi image from scratch
 on:
   push:
     branches:
-      - 'bullseye/**'
+      - 'bullseye'
 
   #release:
   #  types: [created]
