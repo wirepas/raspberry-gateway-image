@@ -42,8 +42,7 @@ jobs:
           repo: https://github.com/RPi-Distro/pi-gen.git
           tag: '*${{ inputs.debian_distro }}*'
 
-      - name: checkout pi-gen for buster
-        if: inputs.debian_distro == 'buster'
+      - name: checkout pi-gen for ${{ inputs.debian_distro }}
         uses: actions/checkout@v2
         with:
           repository: 'RPi-Distro/pi-gen'
@@ -59,7 +58,7 @@ jobs:
         run: |
            for i in {0..${{ env[inputs.img_type] }}}; do var+="stage$i "; done; echo "STAGE_LIST=\"${var}\"" >> config
 
-      - name: run script with docker
+      - name: run script to build gateway image
         run: sudo ./build.sh
         working-directory: pi-gen
 
