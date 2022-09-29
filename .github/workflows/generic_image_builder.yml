@@ -59,6 +59,9 @@ jobs:
            for i in {0..${{ env[env.img_type] }}}; do var+="stage$i "; done; echo "STAGE_LIST=\"${var}\"" >> config
            cp config pi-gen/
 
+      - name: add required dependencies
+        run: sudo apt-get install -y quilt qemu-user-static debootstrap libarchive-tools qemu-utils
+
       - name: run script to build gateway image
         run: sudo ./build.sh
         working-directory: pi-gen
