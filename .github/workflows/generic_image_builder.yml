@@ -23,6 +23,10 @@ env:
   # desktop includes stage 0 to stage 4
   desktop: 4
 
+  # temporary hack to inject the values and test the pipeline
+  inputs.debian_distro: bullseye
+  inputs.img_type: lite
+
 jobs:
   build_image:
     runs-on: ubuntu-22.04
