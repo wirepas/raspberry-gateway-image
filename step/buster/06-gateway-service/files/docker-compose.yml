@@ -52,7 +52,6 @@ services:
     devices:
       - ${WM_GW_SINK_UART_PORT}:/dev/mysink
     environment:
-      WM_GW_SINK_BAUDRATE: ${WM_GW_SINK_BITRATE}
       WM_GW_SINK_ID: 1
       WM_GW_SINK_UART_PORT: /dev/mysink
     volumes:
