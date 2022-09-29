@@ -24,8 +24,8 @@ env:
   desktop: 4
 
   # temporary hack to inject the values and test the pipeline
-  inputs.debian_distro: bullseye
-  inputs.img_type: lite
+  debian_distro: bullseye
+  img_type: lite
 
 jobs:
   build_image:
@@ -35,28 +35,28 @@ jobs:
       - name: checkout our repo
         uses: actions/checkout@v2
 
-      - name: find latest ${{ inputs.debian_distro }} tag on pi-gen repository
+      - name: find latest ${{ debian_distro }} tag on pi-gen repository
         id: latest_tag
         uses: tdemin/find-latest-tag@v1
         with:
           repo: https://github.com/RPi-Distro/pi-gen.git
-          tag: '*${{ inputs.debian_distro }}*'
+          tag: '*${{ debian_distro }}*'
 
-      - name: checkout pi-gen for ${{ inputs.debian_distro }}
+      - name: checkout pi-gen for ${{ debian_distro }}
         uses: actions/checkout@v2
         with:
           repository: 'RPi-Distro/pi-gen'
           ref: ${{ steps.latest_tag.outputs.tag }}
           path: 'pi-gen'
 
-      - name: Copy our own sub step for the ${{ inputs.debian_distro }}
+      - name: Copy our own sub step for the ${{ debian_distro }}
         run: |
-          cp -r step/${{ inputs.debian_distro }}/* pi-gen/stage2/
+          cp -r step/${{ debian_distro }}/* pi-gen/stage2/
           chmod a+x pi-gen/stage2/06-gateway-service/01-run.sh
 
       - name: copy config
         run: |
-           for i in {0..${{ env[inputs.img_type] }}}; do var+="stage$i "; done; echo "STAGE_LIST=\"${var}\"" >> config
+           for i in {0..${{ env[img_type] }}}; do var+="stage$i "; done; echo "STAGE_LIST=\"${var}\"" >> config
 
       - name: run script to build gateway image
         run: sudo ./build.sh
