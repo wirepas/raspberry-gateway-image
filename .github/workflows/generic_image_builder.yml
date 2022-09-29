@@ -57,6 +57,8 @@ jobs:
       - name: copy config
         run: |
            for i in {0..${{ env[env.img_type] }}}; do var+="stage$i "; done; echo "STAGE_LIST=\"${var}\"" >> config
+           cat config
+           ls -ltr
 
       - name: run script to build gateway image
         run: sudo ./build.sh
