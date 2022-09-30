@@ -17,10 +17,10 @@ ExecStartPre=-docker load --input sink_service.tar
 ExecStartPre=-docker load --input dbus_service.tar
 
 # Pull just in case we use latest or egde tag
-ExecStartPre=-docker-compose pull
+ExecStartPre=-docker compose pull
 
 # Start the gateway
-ExecStart=docker-compose up -d
+ExecStart=docker compose up -d
 
 # Cleanup our preloaded images
 ExecStartPost=-rm transport_service.tar

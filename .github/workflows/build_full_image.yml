@@ -10,7 +10,7 @@ on:
 
 jobs:
   build_image:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
 
     steps:
       - name: checkout our repo
@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: 'RPi-Distro/pi-gen'
-          ref: '2021-05-07-raspbian-buster'
+          ref: '2022-09-22-raspios-bullseye'
           path: 'pi-gen'
              
       - name: Copy our own sub step
@@ -32,8 +32,11 @@ jobs:
         run: |
            cp config pi-gen/
         
-      - name: run script with docker
-        run: ./build-docker.sh 
+      - name: add required dependencies
+        run: sudo apt-get install -y quilt qemu-user-static debootstrap libarchive-tools qemu-utils
+
+      - name: run script to build gateway image
+        run: sudo ./build.sh
         working-directory: pi-gen
 
       - name: Store artifacts
