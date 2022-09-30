@@ -5,3 +5,4 @@ TARGET_HOSTNAME='wirepasgw'
 FIRST_USER_NAME='wirepas'
 FIRST_USER_PASS='wirepas_pw'
 STAGE_LIST="stage0 stage1 stage2 stage3 stage4"
+DISABLE_FIRST_BOOT_USER_RENAME=1
