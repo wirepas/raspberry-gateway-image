@@ -33,7 +33,9 @@ jobs:
            cp config pi-gen/
         
       - name: add required dependencies
-        run: sudo apt-get install -y quilt qemu-user-static debootstrap libarchive-tools qemu-utils
+        run: |
+           sudo apt-get update
+           sudo apt-get install -y quilt qemu-user-static debootstrap libarchive-tools qemu-utils
 
       - name: run script to build gateway image
         run: sudo ./build.sh
