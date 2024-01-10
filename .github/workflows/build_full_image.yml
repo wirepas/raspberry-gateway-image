@@ -20,7 +20,7 @@ jobs:
         uses: actions/checkout@v2
         with:
           repository: 'RPi-Distro/pi-gen'
-          ref: '2022-09-22-raspios-bullseye'
+          ref: '2023-12-05-raspios-bookworm-arm64'
           path: 'pi-gen'
              
       - name: Copy our own sub step
