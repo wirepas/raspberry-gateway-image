@@ -1,13 +1,9 @@
 #!/bin/bash
 
 echo "Do modification for rpi hat (to take control of /dev/ttyAMA0 instead of onboard bluetooth chip"
-if grep -Fq "console=serial0,115200 console=tty1" /boot/cmdline.txt
-then
-  sed -i 's/console=serial0,115200 console=tty1 //g' /boot/cmdline.txt
-else
-  echo "Cannot update cmdline.txt"
-  exit 1
-fi
+
+raspi-config nonint do_serial_hw 0
+raspi-config nonint do_serial_cons 1
 
 if test -f /boot/config.txt
 then
