@@ -49,7 +49,7 @@ services:
     network_mode: host
     environment:
       # To be modified
-      WM_GW_ID: ${WM_GW_ID}
+      WM_GW_ID: ${WM_GW_ID}-local
       WM_GW_MODEL: "WirepasRpiGwDocker"
       WM_GW_VERSION: ${GATEWAY_TAG}
       WM_SERVICES_MQTT_HOSTNAME: "localhost"
