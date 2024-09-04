@@ -14,13 +14,12 @@ jobs:
 
     steps:
       - name: checkout our repo
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         
       - name: checkout pi-gen
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
         with:
           repository: 'RPi-Distro/pi-gen'
-          ref: '2024-03-15-raspios-bookworm'
           path: 'pi-gen'
              
       - name: Copy our own sub step
@@ -42,7 +41,7 @@ jobs:
         working-directory: pi-gen
 
       - name: Store artifacts
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v4
         with:
           path: pi-gen/deploy/image*
           
