@@ -34,7 +34,7 @@ jobs:
       - name: add required dependencies
         run: |
            sudo apt-get update
-           sudo apt-get install -y quilt qemu-user-static debootstrap libarchive-tools qemu-utils
+           sudo apt-get install -y quilt qemu-user-static debootstrap libarchive-tools qemu-utils arch-test
 
       - name: run script to build gateway image
         run: sudo ./build.sh
