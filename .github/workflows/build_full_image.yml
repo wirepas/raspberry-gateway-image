@@ -32,7 +32,7 @@ jobs:
 
       - name: Enable image export after stage3
         run: |
-           touch pi-gen/stage3/EXPORT_IMAGE
+           cp pi-gen/stage4/EXPORT_IMAGE pi-gen/stage3/EXPORT_IMAGE
         
       - name: add required dependencies
         run: |
