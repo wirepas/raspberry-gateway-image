@@ -25,14 +25,11 @@ jobs:
       - name: Copy our own sub step
         run: |
           cp -r step/* pi-gen/stage2/
+          chmod a+x pi-gen/stage2/06-gateway-service/01-run.sh
      
       - name: copy config
         run: |
            cp config pi-gen/
-
-      - name: Enable image export after stage3
-        run: |
-           touch pi-gen/stage3/EXPORT_IMAGE
         
       - name: add required dependencies
         run: |
