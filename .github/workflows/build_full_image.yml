@@ -10,6 +10,15 @@ on:
 
 jobs:
   build_image:
+    strategy:
+      matrix:
+        architecture: [armhf, arm64]
+        include:
+          - architecture: armhf
+            pi-gen-tag: 2024-07-04-raspios-bookworm
+          - architecture: arm64
+            pi-gen-tag: 2024-07-04-raspios-bookworm-arm64
+
     runs-on: ubuntu-22.04
 
     steps:
@@ -20,12 +29,12 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: 'RPi-Distro/pi-gen'
+          ref: ${{ matrix.pi-gen-tag }}
           path: 'pi-gen'
              
       - name: Copy our own sub step
         run: |
           cp -r step/* pi-gen/stage2/
-          chmod a+x pi-gen/stage2/06-gateway-service/01-run.sh
      
       - name: copy config
         run: |
@@ -36,6 +45,14 @@ jobs:
            sudo apt-get update
            sudo apt-get install -y quilt qemu-user-static debootstrap libarchive-tools qemu-utils arch-test
 
+      - name: Clear some space in the runner
+        run: |
+          df -h
+          sudo rm -rf /usr/share/dotnet
+          df -h
+          sudo rm -rf /usr/local/lib/android
+          df -h
+
       - name: run script to build gateway image
         run: sudo ./build.sh
         working-directory: pi-gen
@@ -43,6 +60,7 @@ jobs:
       - name: Store artifacts
         uses: actions/upload-artifact@v4
         with:
+          name: Wirepas_Gateway-${{ matrix.architecture }}
           path: pi-gen/deploy/image*
           
       - name: Get release
@@ -56,8 +74,8 @@ jobs:
         if: github.event_name == 'release'
         working-directory: pi-gen/deploy
         run: |
-          sudo mv *Wirepas_Gateway-lite.zip Wirepas_Gateway_${{ github.event.release.tag_name }}-lite.zip
-          sudo mv *Wirepas_Gateway.zip Wirepas_Gateway_${{ github.event.release.tag_name }}.zip
+          sudo mv *Wirepas_Gateway-lite.zip Wirepas_Gateway_${{ github.event.release.tag_name }}-${{ matrix.architecture }}-lite.zip
+          sudo mv *Wirepas_Gateway.zip Wirepas_Gateway_${{ github.event.release.tag_name }}-${{ matrix.architecture }}.zip
 
       - name: Upload Desktop image
         if: github.event_name == 'release'
@@ -66,8 +84,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
            upload_url: ${{ steps.get_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`
-           asset_path: "pi-gen/deploy/Wirepas_Gateway_${{ github.event.release.tag_name }}.zip"
-           asset_name: "Wirepas_Gateway_${{ github.event.release.tag_name }}.zip"
+           asset_path: "pi-gen/deploy/Wirepas_Gateway_${{ github.event.release.tag_name }}-${{ matrix.architecture }}.zip"
+           asset_name: "Wirepas_Gateway_${{ github.event.release.tag_name }}-${{ matrix.architecture }}.zip"
            asset_content_type: application/zip
            
       - name: Upload Lite image
@@ -77,8 +95,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
            upload_url: ${{ steps.get_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`
-           asset_path: "pi-gen/deploy/Wirepas_Gateway_${{ github.event.release.tag_name }}-lite.zip"
-           asset_name: "Wirepas_Gateway_${{ github.event.release.tag_name }}-lite.zip"
+           asset_path: "pi-gen/deploy/Wirepas_Gateway_${{ github.event.release.tag_name }}-${{ matrix.architecture }}-lite.zip"
+           asset_name: "Wirepas_Gateway_${{ github.event.release.tag_name }}-${{ matrix.architecture }}-lite.zip"
            asset_content_type: application/zip
 
            
