@@ -1,5 +1,5 @@
 # Config file to customize build
-IMG_NAME="Raspbian_Wirepas_Gateway-$ARCH"
+IMG_NAME='Raspbian_Wirepas_Gateway'
 RELEASE='bookworm'
 ENABLE_SSH=1
 TARGET_HOSTNAME='wirepasgw'
