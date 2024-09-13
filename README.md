@@ -14,7 +14,7 @@ On top of it, this image is customized with Docker tool to allow the usage of Wi
 ## How to configure the gateway
 
 In a standard configuration with one sink attached to the gateway and the gateway publishing to a single broker, the gateway can be configured with the file [gateway.env](templates/gateway.env).
-This file must be adapted to reflect your setup and copied under /boot/wirepas (after the image has been flashed to the SD-Card).
+This file must be adapted to reflect your setup and copied under /boot/firmware/wirepas (after the image has been flashed to the SD-Card).
 
 ### Gateway version
 GATEWAY_TAG key allows you to specify a new version of gateway.

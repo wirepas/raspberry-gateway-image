@@ -2,10 +2,10 @@
 Description=Wirepas Docker gateway update
 After=docker.service network-online.target
 Requires=docker.service network-online.target
-ConditionFileNotEmpty=/boot/wirepas/gateway.env
+ConditionFileNotEmpty=/boot/firmware/wirepas/gateway.env
 
 [Service]
-EnvironmentFile=/boot/wirepas/gateway.env
+EnvironmentFile=/boot/firmware/wirepas/gateway.env
 WorkingDirectory=/home/wirepas/
 Type=oneshot
 RemainAfterExit=yes
