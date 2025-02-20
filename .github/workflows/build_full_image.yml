@@ -15,9 +15,9 @@ jobs:
         architecture: [armhf, arm64]
         include:
           - architecture: armhf
-            pi-gen-tag: 2024-07-04-raspios-bookworm
+            pi-gen-tag: 2024-11-19-raspios-bookworm-armhf
           - architecture: arm64
-            pi-gen-tag: 2024-07-04-raspios-bookworm-arm64
+            pi-gen-tag: 2024-11-19-raspios-bookworm-arm64
 
     runs-on: ubuntu-22.04
 
