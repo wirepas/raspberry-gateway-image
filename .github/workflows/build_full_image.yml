@@ -15,11 +15,11 @@ jobs:
         architecture: [armhf, arm64]
         include:
           - architecture: armhf
-            pi-gen-tag: 2024-11-19-raspios-bookworm-armhf
+            pi-gen-tag: 2025-10-01-raspios-trixie-armhf
           - architecture: arm64
-            pi-gen-tag: 2024-11-19-raspios-bookworm-arm64
+            pi-gen-tag: 2025-10-01-raspios-trixie-arm64
 
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-24.04
 
     steps:
       - name: checkout our repo
