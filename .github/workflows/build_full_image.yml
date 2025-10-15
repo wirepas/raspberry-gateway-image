@@ -12,14 +12,13 @@ jobs:
   build_image:
     strategy:
       matrix:
-        architecture: [armhf, arm64]
+        architecture: [arm64]
         include:
-          - architecture: armhf
-            pi-gen-tag: 2025-10-01-raspios-trixie-armhf
           - architecture: arm64
             pi-gen-tag: 2025-10-01-raspios-trixie-arm64
+            runner: ubuntu-24.04-arm
 
-    runs-on: ubuntu-24.04
+    runs-on: ${{ matrix.runner }}
 
     steps:
       - name: checkout our repo
@@ -40,21 +39,8 @@ jobs:
         run: |
            cp config pi-gen/
         
-      - name: add required dependencies
-        run: |
-           sudo apt-get update
-           sudo apt-get install -y quilt qemu-user-static debootstrap libarchive-tools qemu-utils arch-test
-
-      - name: Clear some space in the runner
-        run: |
-          df -h
-          sudo rm -rf /usr/share/dotnet
-          df -h
-          sudo rm -rf /usr/local/lib/android
-          df -h
-
       - name: run script to build gateway image
-        run: sudo ./build.sh
+        run: ./build-docker.sh
         working-directory: pi-gen
 
       - name: Store artifacts
